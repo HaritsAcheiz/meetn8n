@@ -10,6 +10,7 @@ services:
       - N8N_PORT=5678
       - NODE_ENV=production
       - GENERIC_TIMEZONE=${GENERIC_TIMEZONE}
+      - N8N_COMMUNITY_PACKAGES_ALLOW_TOOL_USAGE=true
     volumes:
       - n8n_data:/home/node/.n8n
       - ./local_files:/files
