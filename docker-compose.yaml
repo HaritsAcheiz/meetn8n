@@ -1,31 +1,18 @@
 version: '3.8'
 services:
   n8n:
-    image: n8nio/n8n:1.90.0
+    image: n8nio/n8n:docker
     restart: always
     ports:
       - 5678:5678
     environment:
       - N8N_PORT=5678
-      - NODE_ENV=production
       - GENERIC_TIMEZONE=${GENERIC_TIMEZONE}
       - N8N_COMMUNITY_PACKAGES_ALLOW_TOOL_USAGE=true
-      - NODE_FUNCTION_ALLOW_EXTERNAL=true
-      - N8N_DISABLE_PRODUCTION_MAIN_PROCESS=false
-      - PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/node/.npm-global/bin
-      - NPM_CONFIG_PREFIX=/home/node/.npm-global
+      - N8N_RUNNERS_ENABLED=true
+      - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
     volumes:
       - n8n_data:/home/node/.n8n
-      - ./local_files:/files
-      - npm_global:/home/node/.npm-global
-    # This command will install any needed packages and start n8n
-    command: >
-      bash -c "mkdir -p /home/node/.npm-global &&
-             npm config set prefix /home/node/.npm-global &&
-             export PATH=/home/node/.npm-global/bin:$PATH &&
-             npm install -g npm@latest &&
-             npm install -g @modelcontextprotocol/server-github
-             n8n start"
+      - /var/run/docker.sock:/var/run/docker.sock
 volumes:
   n8n_data:
-  npm_global:
